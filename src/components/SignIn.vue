@@ -28,12 +28,12 @@
               <Field
                 type="email"
                 name="email"
+                :disabled="loading"
                 id="email"
                 v-model="form.email"
                 as="input"
                 class="bg-gray-50 border border-gray-300 text-gray-900 rounded-lg focus:ring-green-vee focus:border-green-vee block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                 placeholder="name@company.com"
-                required=""
               />
               <ErrorMessage class="text-red-600 text-sm" name="email" />
             </div>
@@ -45,13 +45,14 @@
               >
               <Field
                 type="password"
+                :disabled="loading"
                 name="password"
                 as="input"
                 id="password"
                 v-model="form.password"
                 placeholder="••••••••"
                 class="bg-gray-50 border border-gray-300 text-gray-900 rounded-lg focus:ring-green-vee focus:border-green-vee block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                required=""
+                @input="checkPasswordStrength"
               />
               <ErrorMessage class="text-red-600 text-sm" name="password" />
             </div>
@@ -64,16 +65,21 @@
             </div>
             <button
               type="submit"
-              class="w-full text-white bg-green-vee hover:bg-green-vee focus:ring-4 focus:outline-none focus:ring-green-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-green-500 dark:hover:bg-green-600 dark:focus:ring-green-700"
+              :disabled="loading"
+              class="w-full flex items-center justify-center text-white bg-green-vee hover:bg-green-vee focus:ring-4 focus:outline-none focus:ring-green-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-green-500 dark:hover:bg-green-600 dark:focus:ring-green-700"
             >
-              Sign in
+              <span v-if="loading === true" class="spinner"></span>
+              <span>Sign in</span>
             </button>
-            <p class="text-sm font-light text-gray-500 dark:text-gray-400">
-              Don’t have an account yet?
-              <a
-                href="#"
+            <p v-if="success" class="success-message">Sign in successfully!</p>
+            <p
+              class="text-sm font-light text-gray-500 dark:text-gray-400 flex items-center gap-1"
+            >
+              <span>Don’t have an account yet?</span>
+              <span
+                @click="handleChangeToSignUp"
                 class="font-medium text-green-vee hover:underline dark:text-green-vee"
-                >Sign up</a
+                >Sign up</span
               >
             </p>
           </form>
@@ -84,9 +90,19 @@
 </template>
 
 <script setup>
-import { useForm, Field, ErrorMessage } from "vee-validate";
+import { useForm, Field, ErrorMessage, useResetForm } from "vee-validate";
 import { ref } from "vue";
-import * as yup from 'yup';
+import * as yup from "yup";
+
+const emit = defineEmits(["changeToSignIn"]);
+
+const handleChangeToSignUp = () => {
+  emit("changeToSignUp");
+};
+
+const resetForm = useResetForm();
+const loading = ref(false);
+const success = ref(false);
 
 const schema = yup.object({
   email: yup.string().required("Email is required").email("Email is not valid"),
@@ -101,7 +117,39 @@ const { handleSubmit, values: form } = useForm({
   validationSchema: schema,
 });
 
-const submitForm = handleSubmit((values) => {
-  console.log("Form Values:", values);
+const submitForm = handleSubmit(async (values) => {
+  loading.value = true;
+  await new Promise((resolve) => setTimeout(resolve, 3000));
+  success.value = true;
+  resetForm();
+  loading.value = false;
+  console.log("values", values);
 });
 </script>
+
+<style scoped>
+.spinner {
+  border: 4px solid rgba(0, 0, 0, 0.1);
+  border-left: 4px solid white;
+  border-radius: 50%;
+  width: 20px;
+  height: 20px;
+  animation: spin 1s linear infinite;
+  display: inline-block;
+  margin-right: 8px;
+}
+
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+.success-message {
+  color: green;
+  font-weight: bold;
+}
+</style>
