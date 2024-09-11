@@ -115,16 +115,19 @@
               class="w-full flex items-center gap-2 justify-center text-white bg-green-vee hover:bg-green-vee focus:ring-4 focus:outline-none focus:ring-green-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-green-500 dark:hover:bg-green-600 dark:focus:ring-green-700"
             >
               <span v-if="loading === true" class="spinner"></span>
-              <span>Sign up</span>
+              <span v-if="!loading">Sign up</span>
             </button>
             <p v-if="success" class="success-message">Sign up successfully!</p>
+            <p v-if="isError.message !== ''" class="text-red-500">
+              {{ isError.message }}
+            </p>
             <p
               class="text-sm font-light text-gray-500 dark:text-gray-400 flex items-center gap-1"
             >
               <span>Already have an account?</span>
               <span
                 @click="handleChangeToSignIn"
-                class="font-medium text-green-vee hover:underline dark:text-green-vee"
+                class="font-medium text-green-vee hover:underline dark:text-green-vee cursor-pointer"
                 >Sign in
               </span>
             </p>
@@ -140,18 +143,21 @@ import { useForm, Field, ErrorMessage, useResetForm } from "vee-validate";
 import { ref } from "vue";
 import * as yup from "yup";
 import zxcvbn from "zxcvbn";
+import { useRouter } from "vue-router";
+import axiosConfig from "@/config/axiosConfig";
 
-const emit = defineEmits(["changeToSignIn"]);
+const apiCall = import.meta.env.VITE_BACKEND_API;
 
-const resetForm = useResetForm();
+const router = useRouter();
 
 const passwordStrength = ref(null);
 
 const loading = ref(false);
 const success = ref(false);
+const isError = ref(false);
 
 const handleChangeToSignIn = () => {
-  emit("changeToSignIn");
+  router.push("/sign-in");
 };
 
 const schema = yup.object({
@@ -185,17 +191,52 @@ const checkPasswordStrength = () => {
   passwordStrength.value = strengthLevels[score] || strengthLevels[0];
 };
 
-const { handleSubmit, values: form } = useForm({
+const {
+  handleSubmit,
+  values: form,
+  resetForm,
+} = useForm({
   validationSchema: schema,
 });
 
+const storeTokens = (token, refreshToken) => {
+  localStorage.setItem("token", token);
+  localStorage.setItem("refresh_token", refreshToken);
+};
+
 const submitForm = handleSubmit(async (values) => {
-  loading.value = true;
-  await new Promise((resolve) => setTimeout(resolve, 3000));
-  success.value = true;
-  resetForm();
-  loading.value = false;
-  console.log("values", values);
+  try {
+    isError.value = "";
+    const response = await axiosConfig.post(
+      `${apiCall}/api/auth/register`,
+      {
+        name: values.name,
+        email: values.email,
+        password: values.password,
+      },
+      {
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }
+    );
+
+    const { token, refreshToken } = response.data;
+
+    storeTokens(token, refreshToken);
+
+    loading.value = true;
+    resetForm();
+    success.value = true;
+    loading.value = false;
+    passwordStrength.value = 0;
+  } catch (error) {
+    console.error(
+      "Error during sign up:",
+      error.response ? error.response.data : error.message
+    );
+    isError.value = error.response ? error.response.data : error.message;
+  }
 });
 </script>
 

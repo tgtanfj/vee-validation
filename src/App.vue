@@ -1,6 +1,5 @@
 <template>
-  <SignIn @changeToSignUp="toggleSignInSignUp" v-if="isSignin" />
-  <SignUp @changeToSignIn="toggleSignInSignUp" v-if="!isSignin" />
+  <router-view/>
 </template>
 
 <script setup>
@@ -9,10 +8,6 @@ import { ref } from "vue";
 import SignUp from "./components/SignUp.vue";
 
 const isSignin = ref(true);
-
-const toggleSignInSignUp = () => {
-  isSignin.value = !isSignin.value
-}
 
 </script>
 

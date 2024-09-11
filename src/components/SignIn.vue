@@ -16,7 +16,7 @@
           <h1
             class="text-xl font-bold leading-tight tracking-tight text-gray-900 md:text-2xl dark:text-white"
           >
-            Sign in to your account
+            <span>Sign in to your account</span>
           </h1>
           <form class="space-y-4 md:space-y-6" @submit.prevent="submitForm">
             <div>
@@ -69,16 +69,21 @@
               class="w-full flex items-center justify-center text-white bg-green-vee hover:bg-green-vee focus:ring-4 focus:outline-none focus:ring-green-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-green-500 dark:hover:bg-green-600 dark:focus:ring-green-700"
             >
               <span v-if="loading === true" class="spinner"></span>
-              <span>Sign in</span>
+              <span v-if="!loading">Sign in</span>
             </button>
-            <p v-if="success" class="success-message">Sign in successfully!</p>
+            <p v-if="success" class="success-message">
+              "Sign in successfully!"
+            </p>
+            <p v-if="isError.message !== ''" class="text-red-500">
+              {{ isError.message }}
+            </p>
             <p
               class="text-sm font-light text-gray-500 dark:text-gray-400 flex items-center gap-1"
             >
               <span>Don’t have an account yet?</span>
               <span
                 @click="handleChangeToSignUp"
-                class="font-medium text-green-vee hover:underline dark:text-green-vee"
+                class="font-medium text-green-vee hover:underline dark:text-green-vee cursor-pointer"
                 >Sign up</span
               >
             </p>
@@ -93,16 +98,23 @@
 import { useForm, Field, ErrorMessage, useResetForm } from "vee-validate";
 import { ref } from "vue";
 import * as yup from "yup";
+import { useRouter } from "vue-router";
+import { useUserStore } from "@/stores/userStore";
+import axiosConfig from "@/config/axiosConfig";
 
-const emit = defineEmits(["changeToSignIn"]);
+const router = useRouter();
+const user = useUserStore();
+
+const apiCall = import.meta.env.VITE_BACKEND_API;
 
 const handleChangeToSignUp = () => {
-  emit("changeToSignUp");
+  router.push("/sign-up");
 };
 
 const resetForm = useResetForm();
 const loading = ref(false);
 const success = ref(false);
+const isError = ref("");
 
 const schema = yup.object({
   email: yup.string().required("Email is required").email("Email is not valid"),
@@ -117,13 +129,45 @@ const { handleSubmit, values: form } = useForm({
   validationSchema: schema,
 });
 
+const storeTokens = (token, refreshToken) => {
+  localStorage.setItem("token", token);
+  localStorage.setItem("refresh_token", refreshToken);
+};
+
 const submitForm = handleSubmit(async (values) => {
-  loading.value = true;
-  await new Promise((resolve) => setTimeout(resolve, 3000));
-  success.value = true;
-  resetForm();
-  loading.value = false;
-  console.log("values", values);
+  try {
+    isError.value = "";
+    const response = await axiosConfig.post(
+      `${apiCall}/api/auth/login`,
+      {
+        email: values.email,
+        password: values.password,
+      },
+      {
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }
+    );
+
+    const { token, refreshToken } = response.data;
+
+    storeTokens(token, refreshToken);
+
+    loading.value = true;
+    success.value = true;
+    resetForm();
+    loading.value = false;
+    console.log("values", values);
+    router.push("/home");
+    user.setUser(response.data.user);
+  } catch (error) {
+    console.error(
+      "Error during sign in:",
+      error.response ? error.response.data : error.message
+    );
+    isError.value = error.response ? error.response.data : error.message;
+  }
 });
 </script>
 
