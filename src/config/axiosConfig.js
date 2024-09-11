@@ -49,7 +49,7 @@ axiosConfig.interceptors.response.use(
         const { token, refreshToken } = response.data;
 
         localStorage.setItem("token", token);
-        localStorage.setItem("refreshToken", refreshToken);
+        localStorage.setItem("refresh_token", refreshToken);
 
         axiosConfig.defaults.headers.common[
           "Authorization"
