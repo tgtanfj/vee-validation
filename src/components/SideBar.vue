@@ -3,6 +3,7 @@ import { useSideBarStore } from "@/stores/sidebarStore";
 import { useUserStore } from "@/stores/userStore";
 import { LogOut } from "lucide-vue-next";
 import { useRouter } from "vue-router";
+import { CircleX } from 'lucide-vue-next';
 
 const router = useRouter();
 

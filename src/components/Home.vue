@@ -190,6 +190,36 @@
           </table>
         </div>
       </form>
+      <div class="flex justify-center items-center mt-6">
+        <button
+          class="px-4 py-2 mr-2 text-white rounded"
+          :class="{
+            'bg-gray-300 text-black cursor-not-allowed hover:bg-gray-300':
+              currentPage === 1,
+            'bg-green-vee rounded hover:bg-[#339e7b]': currentPage !== 1,
+          }"
+          :disabled="currentPage === 1"
+          @click="changePage(currentPage - 1)"
+        >
+          Back
+        </button>
+
+        <span class="mx-2">Page {{ currentPage }} / {{ totalPages }}</span>
+
+        <button
+          class="px-4 py-2 ml-2 text-white rounded"
+          :class="{
+            'bg-gray-300 text-black cursor-not-allowed hover:bg-gray-300':
+              currentPage === totalPages,
+            'bg-green-vee rounded hover:bg-[#339e7b]':
+              currentPage !== totalPages,
+          }"
+          :disabled="currentPage === totalPages"
+          @click.prevent="changePage(currentPage + 1)"
+        >
+          Next
+        </button>
+      </div>
     </div>
     <Modal
       title="Update User"
@@ -299,6 +329,10 @@ const isEditting = ref(true);
 const isPending = ref(false);
 const allUsers = ref([]);
 
+const limit = 10;
+const currentPage = ref(1);
+const totalPages = ref(1);
+
 const {
   handleSubmit: handleSubmitUpdateUser,
   setValues: updateUserSetValues,
@@ -396,16 +430,27 @@ const toggleEdit = () => {
   isEditting.value = !isEditting.value;
 };
 
-const getAllUsers = async () => {
+const getAllUsers = async (page) => {
   try {
-    const response = await axiosConfig.get(`${apiCall}/api/user/get-users`, {
-      headers: {
-        "Content-Type": "application/json",
+    const response = await axiosConfig.get(
+      `${apiCall}/api/user/get-users`,
+      {
+        params: {
+          page,
+          limit,
+        },
       },
-    });
+      {
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }
+    );
 
     if (response.data) {
-      allUsers.value = response.data;
+      allUsers.value = response.data.users;
+      currentPage.value = response.data.currentPage;
+      totalPages.value = response.data.totalPages;
     }
   } catch (error) {
     console.error(
@@ -413,6 +458,12 @@ const getAllUsers = async () => {
       error.response ? error.response.data : error.message
     );
     throw error;
+  }
+};
+
+const changePage = (page) => {
+  if (page >= 1 && page <= totalPages.value) {
+    getAllUsers(page);
   }
 };
 
