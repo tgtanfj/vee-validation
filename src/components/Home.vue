@@ -36,7 +36,7 @@
             <Field
               as="input"
               name="name"
-              v-model="form.name"
+              v-model="values.name"
               class="p-2 border-2 border-gray-200 rounded-lg focus:outline-none"
               placeholder="User name"
               type="text"
@@ -49,7 +49,7 @@
             <Field
               as="input"
               name="email"
-              v-model="form.email"
+              v-model="values.email"
               class="p-2 border-2 border-gray-200 rounded-lg focus:outline-none cursor-not-allowed"
               placeholder="User email"
               type="email"
@@ -64,7 +64,7 @@
             <Field
               as="input"
               name="address"
-              v-model="form.address"
+              v-model="values.address"
               class="p-2 border-2 border-gray-200 rounded-lg focus:outline-none"
               placeholder="User address"
               type="text"
@@ -77,7 +77,7 @@
             <Field
               as="input"
               name="age"
-              v-model="form.age"
+              v-model="values.age"
               class="p-2 border-2 border-gray-200 rounded-lg focus:outline-none"
               placeholder="User age"
               type="text"
@@ -92,7 +92,7 @@
             <Field
               as="input"
               name="phone"
-              v-model="form.phone"
+              v-model="values.phone"
               class="p-2 border-2 border-gray-200 rounded-lg focus:outline-none"
               placeholder="User phone"
               type="text"
@@ -105,7 +105,7 @@
             <Field
               as="input"
               name="job"
-              v-model="form.job"
+              v-model="values.job"
               class="p-2 border-2 border-gray-200 rounded-lg focus:outline-none"
               placeholder="User job"
               type="text"
@@ -336,7 +336,7 @@ const totalPages = ref(1);
 const {
   handleSubmit: handleSubmitUpdateUser,
   setValues: updateUserSetValues,
-  values: form,
+  values,
 } = useForm({
   validationSchema: updateSchema,
   validateOnChange: false,
@@ -480,18 +480,18 @@ const editUser = (user) => {
   setOpen();
 };
 
-const submitForm = handleSubmitUpdateUser(async (form) => {
+const submitForm = handleSubmitUpdateUser(async (values) => {
   try {
     isPending.value = true;
     const response = await axiosConfig.put(
       `${apiCall}/api/user/update-user-by-id/${userStore.user._id}`,
       JSON.stringify({
-        email: form.email,
-        name: form.name,
-        phone: form.phone,
-        age: form.age,
-        address: form.address,
-        job: form.job,
+        email: values.email,
+        name: values.name,
+        phone: values.phone,
+        age: values.age,
+        address: values.address,
+        job: values.job,
       }),
       {
         headers: {

@@ -56,18 +56,6 @@ const logOut = () => {
             VeePiniaVueRouter
           </p>
         </li>
-        <li @click="clickTab('updateUser')" class="cursor-pointer">
-          <div
-            class="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group"
-            :class="{
-              'bg-gray-200 hover:bg-gray-300 dark:hover:bg-gray-700':
-                tabs.tab === 'updateUser',
-            }"
-          >
-            <UserPen size="25" class="text-gray-500" />
-            <span class="ms-3">Update User</span>
-          </div>
-        </li>
         <li @click="clickTab('allUsers')" class="cursor-pointer">
           <div
             class="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group"
@@ -78,6 +66,18 @@ const logOut = () => {
           >
             <UserPen size="25" class="text-gray-500" />
             <span class="ms-3">All Users</span>
+          </div>
+        </li>
+        <li @click="clickTab('updateUser')" class="cursor-pointer">
+          <div
+            class="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group"
+            :class="{
+              'bg-gray-200 hover:bg-gray-300 dark:hover:bg-gray-700':
+                tabs.tab === 'updateUser',
+            }"
+          >
+            <UserPen size="25" class="text-gray-500" />
+            <span class="ms-3">Update User</span>
           </div>
         </li>
         <li @click="logOut" class="cursor-pointer">
