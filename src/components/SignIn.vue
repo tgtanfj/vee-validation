@@ -164,6 +164,7 @@ const submitForm = handleSubmit(async (values) => {
     loading.value = false;
     router.push("/home");
     userStore.setUser(response.data.user);
+    userStore.setIsAuth(true)
   } catch (error) {
     console.error(
       "Error during sign in:",

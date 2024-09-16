@@ -1,11 +1,13 @@
 <script setup>
 import { useSideBarStore } from "@/stores/sidebarStore";
+import { useUserStore } from "@/stores/userStore";
 import { LogOut } from "lucide-vue-next";
 import { useRouter } from "vue-router";
 
 const router = useRouter();
 
 const tabs = useSideBarStore();
+const user = useUserStore()
 
 const props = defineProps({
   sidebarOpen: {
@@ -26,6 +28,7 @@ const logOut = () => {
   localStorage.setItem("token", "");
   localStorage.setItem("refresh_token", "");
   router.push("/sign-in");
+  user.setIsAuth(false)
 };
 </script>
 

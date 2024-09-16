@@ -5,6 +5,7 @@ export const useUserStore = defineStore("user", {
     token: localStorage.getItem("token") || "",
     refreshToken: localStorage.getItem("refresh_token") || "",
     user: JSON.parse(localStorage.getItem("user")) || {},
+    isAuthenticated: localStorage.getItem("token") ? true : false,
   }),
   actions: {
     setToken(token) {
@@ -22,6 +23,9 @@ export const useUserStore = defineStore("user", {
       } else {
         console.error("User info is undefined");
       }
+    },
+    setIsAuth(value) {
+      this.isAuthenticated = value;
     },
     clearUser() {
       this.token = "";
