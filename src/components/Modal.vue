@@ -1,4 +1,6 @@
 <script setup>
+import { useDarkModeStore } from "@/stores/darkModeStore";
+
 const props = defineProps({
   isOpen: Boolean,
   setOpen: Function,
@@ -7,15 +9,18 @@ const props = defineProps({
   submit: Function,
   isPending: Boolean,
 });
+
+const darkModeStore = useDarkModeStore();
 </script>
 
 <template>
   <div
     v-if="isOpen"
     class="fixed inset-0 flex items-center justify-center z-50 bg-gray-900 bg-opacity-50"
+    :class="darkModeStore.darkMode ? 'dark' : ''"
     @click.self="props.setOpen"
   >
-    <div class="bg-white p-6 rounded-lg shadow-lg max-w-lg w-full">
+    <div class="bg-white dark:bg-gray-800 dark:border-gray-500 dark:border-2 dark:text-[#94a2b1] p-6 rounded-lg shadow-lg max-w-lg w-full">
       <h3 class="text-2xl font-semibold text-green-vee">{{ props.title }}</h3>
       <h5 class="text-base text-gray-500">{{ props.subTitle }}</h5>
       <div class="text-left mt-4 mb-8">
@@ -24,7 +29,7 @@ const props = defineProps({
       <div class="mt-4 flex justify-end gap-4">
         <button
           @click="props.setOpen"
-          class="px-4 py-2 bg-transparent text-black rounded hover:text-green-vee"
+          class="px-4 py-2 bg-transparent text-black rounded hover:text-green-vee dark:text-white"
         >
           Close
         </button>

@@ -249,7 +249,7 @@
             as="input"
             name="name2"
             v-model="form2.name2"
-            class="p-2 border-2 border-gray-200 w-full rounded-lg focus:outline-none"
+            class="p-2 border-2 border-gray-200 w-full rounded-lg focus:outline-none dark:bg-transparent dark:border-gray-700"
             placeholder="User name"
             type="text"
           />
@@ -261,7 +261,7 @@
             as="input"
             name="email2"
             v-model="form2.email2"
-            class="p-2 border-2 border-gray-200 w-full rounded-lg focus:outline-none cursor-not-allowed"
+            class="p-2 border-2 border-gray-200 w-full rounded-lg focus:outline-none cursor-not-allowed dark:bg-transparent dark:border-gray-700"
             placeholder="User email"
             type="text"
             disabled="true"
@@ -274,7 +274,7 @@
             as="input"
             name="phone2"
             v-model="form2.phone2"
-            class="p-2 border-2 border-gray-200 w-full rounded-lg focus:outline-none"
+            class="p-2 border-2 border-gray-200 w-full rounded-lg focus:outline-none dark:bg-transparent dark:border-gray-700"
             placeholder="User phone"
             type="text"
           />
@@ -286,7 +286,7 @@
             as="input"
             name="address2"
             v-model="form2.address2"
-            class="p-2 border-2 border-gray-200 w-full rounded-lg focus:outline-none"
+            class="p-2 border-2 border-gray-200 w-full rounded-lg focus:outline-none dark:bg-transparent dark:border-gray-700"
             placeholder="User address"
             type="text"
           />
@@ -298,7 +298,7 @@
             as="input"
             name="age2"
             v-model="form2.age2"
-            class="p-2 border-2 border-gray-200 w-full rounded-lg focus:outline-none"
+            class="p-2 border-2 border-gray-200 w-full rounded-lg focus:outline-none dark:bg-transparent dark:border-gray-700"
             placeholder="User age"
             type="text"
           />
@@ -310,7 +310,7 @@
             as="input"
             name="job2"
             v-model="form2.job2"
-            class="p-2 border-2 border-gray-200 w-full rounded-lg focus:outline-none"
+            class="p-2 border-2 border-gray-200 w-full rounded-lg focus:outline-none dark:bg-transparent dark:border-gray-700"
             placeholder="User job"
             type="text"
           />
