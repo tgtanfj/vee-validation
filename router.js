@@ -47,8 +47,6 @@ router.beforeEach((to, from, next) => {
   const userStore = useUserStore();
   const isAuthenticated = userStore.isAuthenticated;
 
-  console.log("isAuthenticated", isAuthenticated);
-
   if (
     to.matched.some((record) => record.meta.requiresAuth) &&
     !isAuthenticated

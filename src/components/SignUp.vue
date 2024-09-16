@@ -1,14 +1,20 @@
 <template>
-  <section class="bg-green-vee dark:bg-gray-900">
+  <section
+    :class="darkmode.darkMode ? 'dark' : ''"
+    class="bg-green-vee dark:bg-gray-900"
+  >
     <div
       class="flex flex-col items-center justify-center px-6 py-8 mx-auto md:h-screen lg:py-0"
     >
       <div
-        class="absolute inset-0 z-10 h-full w-full bg-green-vee flex flex-col items-center justify-center bg-[radial-gradient(#e5e7eb_1px,transparent_1px)] [background-size:16px_16px]"
+        class="absolute inset-0 z-10 h-full w-full bg-green-vee dark:bg-black flex flex-col items-center justify-center dark:bg-[radial-gradient(#43464f_1px,transparent_1px)] bg-[radial-gradient(#e5e7eb_1px,transparent_1px)] [background-size:16px_16px]"
       >
+        <div class="fixed top-6 right-6">
+          <DarkMode />
+        </div>
         <a
           href="#"
-          class="flex items-center mb-6 text-4xl font-bold dark:text-green-vee text-white"
+          class="flex items-center mb-6 text-4xl font-bold dark:text-white text-white"
         >
           VeePiniaVueRouter
         </a>
@@ -151,10 +157,13 @@ import * as yup from "yup";
 import zxcvbn from "zxcvbn";
 import { useRouter } from "vue-router";
 import axiosConfig from "@/config/axiosConfig";
+import DarkMode from "./DarkMode.vue";
+import { useDarkModeStore } from "@/stores/darkModeStore";
 
 const apiCall = import.meta.env.VITE_BACKEND_API;
 
 const router = useRouter();
+const darkmode = useDarkModeStore();
 
 const passwordStrength = ref(null);
 

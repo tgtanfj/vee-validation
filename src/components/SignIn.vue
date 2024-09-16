@@ -1,14 +1,20 @@
 <template>
-  <section class="bg-green-vee dark:bg-gray-900">
+  <section
+    :class="darkmode.darkMode ? 'dark' : ''"
+    class="bg-green-vee dark:bg-gray-900"
+  >
     <div
       class="relative flex flex-col items-center justify-center px-6 py-8 mx-auto md:h-screen lg:py-0"
     >
       <div
-        class="absolute inset-0 z-10 h-full w-full bg-green-vee flex flex-col items-center justify-center bg-[radial-gradient(#e5e7eb_1px,transparent_1px)] [background-size:16px_16px]"
+        class="absolute inset-0 z-10 h-full w-full bg-green-vee dark:bg-black flex flex-col items-center justify-center dark:bg-[radial-gradient(#43464f_1px,transparent_1px)] bg-[radial-gradient(#e5e7eb_1px,transparent_1px)] [background-size:16px_16px]"
       >
+        <div class="fixed top-6 right-6">
+          <DarkMode />
+        </div>
         <a
           href="#"
-          class="flex items-center mb-6 text-4xl font-bold dark:text-green-vee text-white"
+          class="flex items-center mb-6 text-4xl font-bold text-white dark:text-white"
         >
           VeePiniaVueRouter
         </a>
@@ -105,9 +111,12 @@ import * as yup from "yup";
 import { useRouter } from "vue-router";
 import { useUserStore } from "@/stores/userStore";
 import axiosConfig from "@/config/axiosConfig";
+import DarkMode from "./DarkMode.vue";
+import { useDarkModeStore } from "@/stores/darkModeStore";
 
 const router = useRouter();
 const userStore = useUserStore();
+const darkmode = useDarkModeStore();
 
 const apiCall = import.meta.env.VITE_BACKEND_API;
 
@@ -164,7 +173,7 @@ const submitForm = handleSubmit(async (values) => {
     loading.value = false;
     router.push("/home");
     userStore.setUser(response.data.user);
-    userStore.setIsAuth(true)
+    userStore.setIsAuth(true);
   } catch (error) {
     console.error(
       "Error during sign in:",

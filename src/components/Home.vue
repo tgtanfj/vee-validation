@@ -1,5 +1,12 @@
 <template>
-  <div class="w-full h-screen">
+  <div
+    :class="{
+      dark: darkmode.darkMode,
+      '': darkmode.darkMode === false,
+      'bg-gray-900': darkmode.darkMode,
+    }"
+    class="w-full h-screen"
+  >
     <button
       @click="toggleSidebar"
       data-drawer-target="default-sidebar"
@@ -24,11 +31,15 @@
       </svg>
     </button>
 
-    <SideBar :sidebarOpen="sidebarOpen" :toggleSidebar="toggleSidebar" />
+    <SideBar
+      :darkmode="darkmode.darkMode"
+      :sidebarOpen="sidebarOpen"
+      :toggleSidebar="toggleSidebar"
+    />
 
     <div v-show="tabs.tab === 'updateUser'" class="p-4 sm:ml-64">
       <form
-        class="p-4 space-y-4 border-2 border-gray-200 border-dashed rounded-lg dark:border-gray-700"
+        class="dark:text-[#94a2b1] p-4 space-y-4 border-2 border-gray-200 border-dashed rounded-lg dark:border-gray-700"
       >
         <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-10">
           <div class="flex flex-col gap-2">
@@ -37,7 +48,7 @@
               as="input"
               name="name"
               v-model="values.name"
-              class="p-2 border-2 border-gray-200 rounded-lg focus:outline-none"
+              class="p-2 border-2 border-gray-200 rounded-lg focus:outline-none dark:bg-transparent dark:border-gray-700"
               placeholder="User name"
               type="text"
               :disabled="isEditting"
@@ -50,7 +61,7 @@
               as="input"
               name="email"
               v-model="values.email"
-              class="p-2 border-2 border-gray-200 rounded-lg focus:outline-none cursor-not-allowed"
+              class="p-2 border-2 border-gray-200 rounded-lg focus:outline-none cursor-not-allowed dark:bg-transparent dark:border-gray-700"
               placeholder="User email"
               type="email"
               disabled="true"
@@ -65,7 +76,7 @@
               as="input"
               name="address"
               v-model="values.address"
-              class="p-2 border-2 border-gray-200 rounded-lg focus:outline-none"
+              class="p-2 border-2 border-gray-200 rounded-lg focus:outline-none dark:bg-transparent dark:border-gray-700"
               placeholder="User address"
               type="text"
               :disabled="isEditting"
@@ -78,7 +89,7 @@
               as="input"
               name="age"
               v-model="values.age"
-              class="p-2 border-2 border-gray-200 rounded-lg focus:outline-none"
+              class="p-2 border-2 border-gray-200 rounded-lg focus:outline-none dark:bg-transparent dark:border-gray-700"
               placeholder="User age"
               type="text"
               :disabled="isEditting"
@@ -93,7 +104,7 @@
               as="input"
               name="phone"
               v-model="values.phone"
-              class="p-2 border-2 border-gray-200 rounded-lg focus:outline-none"
+              class="p-2 border-2 border-gray-200 rounded-lg focus:outline-none dark:bg-transparent dark:border-gray-700"
               placeholder="User phone"
               type="text"
               :disabled="isEditting"
@@ -106,7 +117,7 @@
               as="input"
               name="job"
               v-model="values.job"
-              class="p-2 border-2 border-gray-200 rounded-lg focus:outline-none"
+              class="p-2 border-2 border-gray-200 rounded-lg focus:outline-none dark:bg-transparent dark:border-gray-700"
               placeholder="User job"
               type="text"
               :disabled="isEditting"
@@ -204,7 +215,9 @@
           Back
         </button>
 
-        <span class="mx-2">Page {{ currentPage }} / {{ totalPages }}</span>
+        <span class="mx-2 dark:text-[#94a2b1]"
+          >Page {{ currentPage }} / {{ totalPages }}</span
+        >
 
         <button
           class="px-4 py-2 ml-2 text-white rounded"
@@ -317,11 +330,13 @@ import SideBar from "./SideBar.vue";
 import { useSideBarStore } from "@/stores/sidebarStore";
 import Modal from "./Modal.vue";
 import { allUserSchema, updateSchema } from "@/schema";
+import { useDarkModeStore } from "@/stores/darkModeStore";
 
 const apiCall = import.meta.env.VITE_BACKEND_API;
 
 const userStore = useUserStore();
 const tabs = useSideBarStore();
+const darkmode = useDarkModeStore();
 
 const isOpen = ref(false);
 const sidebarOpen = ref(false);

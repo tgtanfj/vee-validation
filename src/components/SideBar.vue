@@ -3,12 +3,13 @@ import { useSideBarStore } from "@/stores/sidebarStore";
 import { useUserStore } from "@/stores/userStore";
 import { LogOut } from "lucide-vue-next";
 import { useRouter } from "vue-router";
-import { CircleX } from 'lucide-vue-next';
+import { CircleX } from "lucide-vue-next";
+import DarkMode from "./DarkMode.vue";
 
 const router = useRouter();
 
 const tabs = useSideBarStore();
-const user = useUserStore()
+const user = useUserStore();
 
 const props = defineProps({
   sidebarOpen: {
@@ -18,6 +19,9 @@ const props = defineProps({
   toggleSidebar: {
     type: Function,
     require: true,
+  },
+  darkmode: {
+    type: Boolean,
   },
 });
 
@@ -29,7 +33,7 @@ const logOut = () => {
   localStorage.setItem("token", "");
   localStorage.setItem("refresh_token", "");
   router.push("/sign-in");
-  user.setIsAuth(false)
+  user.setIsAuth(false);
 };
 </script>
 
@@ -40,7 +44,10 @@ const logOut = () => {
     class="fixed top-0 left-0 z-40 w-64 h-screen transition-transform -translate-x-full sm:translate-x-0 shadow-xl"
     aria-label="Sidebar"
   >
-    <div class="h-full px-3 py-4 overflow-y-auto bg-gray-50 dark:bg-gray-800">
+    <div
+      :class="darkmode ? 'dark' : ''"
+      class="h-full px-3 py-4 overflow-y-auto bg-gray-50 dark:bg-gray-800 relative"
+    >
       <CircleX
         v-if="props.sidebarOpen"
         @click="props.toggleSidebar"
@@ -60,7 +67,7 @@ const logOut = () => {
           <div
             class="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group"
             :class="{
-              'bg-gray-200 hover:bg-gray-300 dark:hover:bg-gray-700':
+              'bg-gray-200 hover:bg-gray-300 dark:bg-gray-600 dark:hover:bg-gray-700':
                 tabs.tab === 'allUsers',
             }"
           >
@@ -72,7 +79,7 @@ const logOut = () => {
           <div
             class="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group"
             :class="{
-              'bg-gray-200 hover:bg-gray-300 dark:hover:bg-gray-700':
+              'bg-gray-200 hover:bg-gray-300 dark:bg-gray-600 dark:hover:bg-gray-700':
                 tabs.tab === 'updateUser',
             }"
           >
@@ -89,6 +96,9 @@ const logOut = () => {
           </p>
         </li>
       </ul>
+      <div class="fixed bottom-6 left-6">
+        <DarkMode />
+      </div>
     </div>
   </aside>
 </template>
