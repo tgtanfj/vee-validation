@@ -199,6 +199,14 @@
               </tr>
             </tbody>
           </table>
+          <button
+            class="absolute right-4 top-2 flex min-w-[60px] items-center justify-center gap-1 rounded bg-green-vee p-1 text-white hover:bg-[#339e7b]"
+            @click="exportFile"
+          >
+            <FileDown v-if="!isExportFile" size="15" />
+            <span v-if="!isExportFile" class="text-xs">Export</span>
+            <span v-if="isExportFile" class="small-spinner"></span>
+          </button>
           <div
             v-if="isNextPage"
             class="absolute inset-0 flex items-center justify-center bg-gray-800 bg-opacity-50 transition-all dark:bg-gray-500 dark:bg-opacity-50"
@@ -356,6 +364,7 @@ import Modal from "./Modal.vue";
 import { allUserSchema, updateSchema } from "@/schema";
 import { useDarkModeStore } from "@/stores/darkModeStore";
 import TableSkeleton from "./TableSkeleton.vue";
+import { FileDown } from "lucide-vue-next";
 
 const apiCall = import.meta.env.VITE_BACKEND_API;
 
@@ -370,6 +379,7 @@ const isPending = ref(false);
 const allUsers = ref([]);
 const isNextPage = ref(false);
 const firstTableLoading = ref(false);
+const isExportFile = ref(false);
 
 const limit = 10;
 const currentPage = ref(1);
@@ -439,6 +449,36 @@ const editUserForm2 = handleSubmitAllUsers(async (value) => {
     throw error;
   }
 });
+
+const exportFile = async () => {
+  try {
+    isExportFile.value = true;
+    const response = await axiosConfig.get(`${apiCall}/api/user/export-users`, {
+      headers: {
+        "Content-Type": "application/json",
+      },
+      responseType: "blob",
+    });
+
+    if (response) {
+      const url = window.URL.createObjectURL(new Blob([response.data]));
+      const link = document.createElement("a");
+      link.href = url;
+      link.setAttribute("download", "Users.xlsx");
+      document.body.appendChild(link);
+      link.click();
+      isExportFile.value = false;
+    }
+    isExportFile.value = false;
+  } catch (error) {
+    console.error(
+      "Error export file all users:",
+      error.response ? error.response.data : error.message,
+    );
+    isExportFile.value = false;
+    throw error;
+  }
+};
 
 const getUserById = async () => {
   try {
@@ -569,6 +609,16 @@ const submitForm = handleSubmitUpdateUser(async (values) => {
   animation: spin 1s linear infinite;
   display: inline-block;
   margin-right: 8px;
+}
+
+.small-spinner {
+  border: 4px solid rgba(0, 0, 0, 0.1);
+  border-left: 4px solid white;
+  border-radius: 50%;
+  width: 15px;
+  height: 15px;
+  animation: spin 1s linear infinite;
+  display: inline-block;
 }
 
 @keyframes spin {
