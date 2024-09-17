@@ -12,12 +12,13 @@
         <div class="fixed right-6 top-6">
           <DarkMode />
         </div>
-        <a
-          href="#"
-          class="mb-6 flex items-center text-4xl font-bold text-white dark:text-white"
-        >
-          VeePiniaVueRouter
-        </a>
+        <div class="max-w-[500px]">
+          <p
+            class="text mb-6 flex items-center text-4xl font-bold text-white dark:text-white"
+          >
+            VeePiniaVueRouter
+          </p>
+        </div>
         <div
           class="w-full rounded-lg bg-white shadow dark:border dark:border-gray-700 dark:bg-gray-800 sm:max-w-md md:mt-0 xl:p-0"
         >
@@ -209,5 +210,28 @@ const submitForm = handleSubmit(async (values) => {
 .success-message {
   color: green;
   font-weight: bold;
+}
+
+.text {
+  letter-spacing: 10px;
+  border-right: 5px solid;
+  width: 100%;
+  white-space: nowrap;
+  overflow: hidden;
+  animation:
+    typing 2s steps(17),
+    cursor 0.4s step-end infinite alternate;
+}
+
+@keyframes typing {
+  from {
+    width: 0;
+  }
+}
+
+@keyframes cursor {
+  50% {
+    border-color: transparent;
+  }
 }
 </style>
