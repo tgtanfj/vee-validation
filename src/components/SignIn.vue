@@ -4,26 +4,26 @@
     class="bg-green-vee dark:bg-gray-900"
   >
     <div
-      class="relative flex flex-col items-center justify-center px-6 py-8 mx-auto md:h-screen lg:py-0"
+      class="relative mx-auto flex flex-col items-center justify-center px-6 py-8 md:h-screen lg:py-0"
     >
       <div
-        class="absolute inset-0 z-10 h-full w-full bg-green-vee dark:bg-black flex flex-col items-center justify-center dark:bg-[radial-gradient(#43464f_1px,transparent_1px)] bg-[radial-gradient(#e5e7eb_1px,transparent_1px)] [background-size:16px_16px]"
+        class="absolute inset-0 z-10 flex h-full w-full flex-col items-center justify-center bg-green-vee bg-[radial-gradient(#e5e7eb_1px,transparent_1px)] [background-size:16px_16px] dark:bg-black dark:bg-[radial-gradient(#43464f_1px,transparent_1px)]"
       >
-        <div class="fixed top-6 right-6">
+        <div class="fixed right-6 top-6">
           <DarkMode />
         </div>
         <a
           href="#"
-          class="flex items-center mb-6 text-4xl font-bold text-white dark:text-white"
+          class="mb-6 flex items-center text-4xl font-bold text-white dark:text-white"
         >
           VeePiniaVueRouter
         </a>
         <div
-          class="w-full bg-white rounded-lg shadow dark:border md:mt-0 sm:max-w-md xl:p-0 dark:bg-gray-800 dark:border-gray-700"
+          class="w-full rounded-lg bg-white shadow dark:border dark:border-gray-700 dark:bg-gray-800 sm:max-w-md md:mt-0 xl:p-0"
         >
-          <div class="p-6 space-y-4 md:space-y-6 sm:p-8">
+          <div class="space-y-4 p-6 sm:p-8 md:space-y-6">
             <h1
-              class="text-xl font-bold leading-tight tracking-tight text-gray-900 md:text-2xl dark:text-white"
+              class="text-xl font-bold leading-tight tracking-tight text-gray-900 dark:text-white md:text-2xl"
             >
               <span>Sign in to your account</span>
             </h1>
@@ -31,7 +31,7 @@
               <div>
                 <label
                   for="email"
-                  class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                  class="mb-2 block text-sm font-medium text-gray-900 dark:text-white"
                   >Your email</label
                 >
                 <Field
@@ -41,15 +41,15 @@
                   id="email"
                   v-model="form.email"
                   as="input"
-                  class="bg-gray-50 border border-gray-300 text-gray-900 rounded-lg focus:ring-green-vee focus:border-green-vee block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                  class="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-gray-900 focus:border-green-vee focus:ring-green-vee dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400 dark:focus:border-blue-500 dark:focus:ring-blue-500"
                   placeholder="name@company.com"
                 />
-                <ErrorMessage class="text-red-600 text-sm" name="email" />
+                <ErrorMessage class="text-sm text-red-600" name="email" />
               </div>
               <div>
                 <label
                   for="password"
-                  class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                  class="mb-2 block text-sm font-medium text-gray-900 dark:text-white"
                   >Password</label
                 >
                 <Field
@@ -60,10 +60,10 @@
                   id="password"
                   v-model="form.password"
                   placeholder="••••••••"
-                  class="bg-gray-50 border border-gray-300 text-gray-900 rounded-lg focus:ring-green-vee focus:border-green-vee block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                  class="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-gray-900 focus:border-green-vee focus:ring-green-vee dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400 dark:focus:border-blue-500 dark:focus:ring-blue-500"
                   @input="checkPasswordStrength"
                 />
-                <ErrorMessage class="text-red-600 text-sm" name="password" />
+                <ErrorMessage class="text-sm text-red-600" name="password" />
               </div>
               <div class="flex items-center justify-end">
                 <a
@@ -75,7 +75,7 @@
               <button
                 type="submit"
                 :disabled="loading"
-                class="w-full flex items-center justify-center text-white bg-green-vee hover:bg-green-vee focus:ring-4 focus:outline-none focus:ring-green-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-green-500 dark:hover:bg-green-600 dark:focus:ring-green-700"
+                class="flex w-full items-center justify-center rounded-lg bg-green-vee px-5 py-2.5 text-center text-sm font-medium text-white hover:bg-green-vee focus:outline-none focus:ring-4 focus:ring-green-300 dark:bg-green-500 dark:hover:bg-green-600 dark:focus:ring-green-700"
               >
                 <span v-if="loading === true" class="spinner"></span>
                 <span v-if="!loading">Sign in</span>
@@ -87,12 +87,12 @@
                 {{ isError.message }}
               </p>
               <p
-                class="text-sm font-light text-gray-500 dark:text-gray-400 flex items-center gap-1"
+                class="flex items-center gap-1 text-sm font-light text-gray-500 dark:text-gray-400"
               >
                 <span>Don’t have an account yet?</span>
                 <span
                   @click="handleChangeToSignUp"
-                  class="font-medium text-green-vee hover:underline dark:text-green-vee cursor-pointer"
+                  class="cursor-pointer font-medium text-green-vee hover:underline dark:text-green-vee"
                   >Sign up</span
                 >
               </p>
@@ -149,6 +149,7 @@ const storeTokens = (token, refreshToken) => {
 
 const submitForm = handleSubmit(async (values) => {
   try {
+    loading.value = true;
     isError.value = "";
     const response = await axiosConfig.post(
       `${apiCall}/api/auth/login`,
@@ -160,14 +161,13 @@ const submitForm = handleSubmit(async (values) => {
         headers: {
           "Content-Type": "application/json",
         },
-      }
+      },
     );
 
     const { token, refreshToken } = response.data;
 
     storeTokens(token, refreshToken);
 
-    loading.value = true;
     success.value = true;
     resetForm();
     loading.value = false;
@@ -177,9 +177,10 @@ const submitForm = handleSubmit(async (values) => {
   } catch (error) {
     console.error(
       "Error during sign in:",
-      error.response ? error.response.data : error.message
+      error.response ? error.response.data : error.message,
     );
     isError.value = error.response ? error.response.data : error.message;
+    loading.value = false;
   }
 });
 </script>

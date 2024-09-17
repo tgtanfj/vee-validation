@@ -16,26 +16,28 @@ const darkModeStore = useDarkModeStore();
 <template>
   <div
     v-if="isOpen"
-    class="fixed inset-0 flex items-center justify-center z-50 bg-gray-900 bg-opacity-50"
+    class="fixed inset-0 z-50 flex items-center justify-center bg-gray-900 bg-opacity-50"
     :class="darkModeStore.darkMode ? 'dark' : ''"
     @click.self="props.setOpen"
   >
-    <div class="bg-white dark:bg-gray-800 dark:border-gray-500 dark:border-2 dark:text-[#94a2b1] p-6 rounded-lg shadow-lg max-w-lg w-full">
+    <div
+      class="w-full max-w-lg rounded-lg bg-white p-6 shadow-lg dark:border-2 dark:border-gray-500 dark:bg-gray-800 dark:text-[#94a2b1]"
+    >
       <h3 class="text-2xl font-semibold text-green-vee">{{ props.title }}</h3>
       <h5 class="text-base text-gray-500">{{ props.subTitle }}</h5>
-      <div class="text-left mt-4 mb-8">
+      <div class="mb-8 mt-4 text-left">
         <slot />
       </div>
       <div class="mt-4 flex justify-end gap-4">
         <button
           @click="props.setOpen"
-          class="px-4 py-2 bg-transparent text-black rounded hover:text-green-vee dark:text-white"
+          class="rounded bg-transparent px-4 py-2 text-black hover:text-green-vee dark:text-white"
         >
           Close
         </button>
         <button
           @click.prevent="props.submit"
-          class="px-4 py-2 bg-green-vee text-white rounded hover:bg-green-700 flex items-center justify-center"
+          class="flex items-center justify-center rounded bg-green-vee px-4 py-2 text-white hover:bg-green-700"
         >
           <span v-if="!props.isPending">Edit</span>
           <span v-if="props.isPending" class="spinner"></span>

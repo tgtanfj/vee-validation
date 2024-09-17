@@ -6,9 +6,9 @@ const darkModeStore = useDarkModeStore();
 </script>
 
 <template>
-  <div  :class="darkModeStore.darkMode ? 'dark' : ''">
+  <div :class="darkModeStore.darkMode ? 'dark' : ''">
     <div class="flex items-center justify-center">
-      <div class="relative inline-flex items-center cursor-pointer">
+      <div class="relative inline-flex cursor-pointer items-center">
         <input
           type="checkbox"
           id="darkModeToggle"
@@ -16,10 +16,10 @@ const darkModeStore = useDarkModeStore();
           v-model="darkModeStore.darkMode"
         />
         <div
-          class="flex items-center justify-between w-16 h-8 bg-gray-200 dark:bg-gray-700 rounded-full p-1 transition-all duration-300 ease-in-out"
+          class="flex h-8 w-16 items-center justify-between rounded-full bg-gray-200 p-1 transition-all duration-300 ease-in-out dark:bg-gray-700"
         >
           <div
-            class="w-6 h-6 bg-white dark:bg-gray-300 rounded-full flex items-center justify-center shadow-md transform transition-transform duration-300 ease-in-out"
+            class="flex h-6 w-6 transform items-center justify-center rounded-full bg-white shadow-md transition-transform duration-300 ease-in-out dark:bg-gray-300"
             :class="{ 'translate-x-8': darkModeStore.darkMode }"
           >
             <SunMedium
@@ -35,7 +35,7 @@ const darkModeStore = useDarkModeStore();
           </div>
           <button
             @click="darkModeStore.toggleDarkMode"
-            class="absolute inset-0 w-full h-full opacity-0 cursor-pointer"
+            class="absolute inset-0 h-full w-full cursor-pointer opacity-0"
           ></button>
         </div>
       </div>

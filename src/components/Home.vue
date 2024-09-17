@@ -5,7 +5,7 @@
       '': darkmode.darkMode === false,
       'bg-gray-900': darkmode.darkMode,
     }"
-    class="w-full h-screen"
+    class="h-screen w-full"
   >
     <button
       @click="toggleSidebar"
@@ -13,11 +13,11 @@
       data-drawer-toggle="default-sidebar"
       aria-controls="default-sidebar"
       type="button"
-      class="inline-flex items-center p-2 mt-2 ms-3 text-sm text-gray-500 rounded-lg sm:hidden hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200 dark:text-gray-400 dark:hover:bg-gray-700 dark:focus:ring-gray-600"
+      class="ms-3 mt-2 inline-flex items-center rounded-lg p-2 text-sm text-gray-500 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200 dark:text-gray-400 dark:hover:bg-gray-700 dark:focus:ring-gray-600 sm:hidden"
     >
       <span class="sr-only">Open sidebar</span>
       <svg
-        class="w-6 h-6"
+        class="h-6 w-6"
         aria-hidden="true"
         fill="currentColor"
         viewBox="0 0 20 20"
@@ -39,21 +39,21 @@
 
     <div v-show="tabs.tab === 'updateUser'" class="p-4 sm:ml-64">
       <form
-        class="dark:text-[#94a2b1] p-4 space-y-4 border-2 border-gray-200 border-dashed rounded-lg dark:border-gray-700"
+        class="space-y-4 rounded-lg border-2 border-dashed border-gray-200 p-4 dark:border-gray-700 dark:text-[#94a2b1]"
       >
-        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-10">
+        <div class="grid grid-cols-1 gap-4 sm:grid-cols-2 sm:gap-10">
           <div class="flex flex-col gap-2">
             <p>Name</p>
             <Field
               as="input"
               name="name"
               v-model="values.name"
-              class="p-2 border-2 border-gray-200 rounded-lg focus:outline-none dark:bg-transparent dark:border-gray-700"
+              class="rounded-lg border-2 border-gray-200 p-2 focus:outline-none dark:border-gray-700 dark:bg-transparent"
               placeholder="User name"
               type="text"
               :disabled="isEditting"
             />
-            <ErrorMessage class="text-red-600 text-sm" name="name" />
+            <ErrorMessage class="text-sm text-red-600" name="name" />
           </div>
           <div class="flex flex-col gap-2">
             <p>Email</p>
@@ -61,27 +61,27 @@
               as="input"
               name="email"
               v-model="values.email"
-              class="p-2 border-2 border-gray-200 rounded-lg focus:outline-none cursor-not-allowed dark:bg-transparent dark:border-gray-700"
+              class="cursor-not-allowed rounded-lg border-2 border-gray-200 p-2 focus:outline-none dark:border-gray-700 dark:bg-transparent"
               placeholder="User email"
               type="email"
               disabled="true"
             />
-            <ErrorMessage class="text-red-600 text-sm" name="email" />
+            <ErrorMessage class="text-sm text-red-600" name="email" />
           </div>
         </div>
-        <div class="grid grid-cols-1 sm:grid-cols-2 gap-10">
+        <div class="grid grid-cols-1 gap-10 sm:grid-cols-2">
           <div class="flex flex-col gap-2">
             <p>Address</p>
             <Field
               as="input"
               name="address"
               v-model="values.address"
-              class="p-2 border-2 border-gray-200 rounded-lg focus:outline-none dark:bg-transparent dark:border-gray-700"
+              class="rounded-lg border-2 border-gray-200 p-2 focus:outline-none dark:border-gray-700 dark:bg-transparent"
               placeholder="User address"
               type="text"
               :disabled="isEditting"
             />
-            <ErrorMessage class="text-red-600 text-sm" name="address" />
+            <ErrorMessage class="text-sm text-red-600" name="address" />
           </div>
           <div class="flex flex-col gap-2">
             <p>Age</p>
@@ -89,27 +89,27 @@
               as="input"
               name="age"
               v-model="values.age"
-              class="p-2 border-2 border-gray-200 rounded-lg focus:outline-none dark:bg-transparent dark:border-gray-700"
+              class="rounded-lg border-2 border-gray-200 p-2 focus:outline-none dark:border-gray-700 dark:bg-transparent"
               placeholder="User age"
               type="text"
               :disabled="isEditting"
             />
-            <ErrorMessage class="text-red-600 text-sm" name="age" />
+            <ErrorMessage class="text-sm text-red-600" name="age" />
           </div>
         </div>
-        <div class="grid grid-cols-1 sm:grid-cols-2 gap-10">
+        <div class="grid grid-cols-1 gap-10 sm:grid-cols-2">
           <div class="flex flex-col gap-2">
             <p>Phone</p>
             <Field
               as="input"
               name="phone"
               v-model="values.phone"
-              class="p-2 border-2 border-gray-200 rounded-lg focus:outline-none dark:bg-transparent dark:border-gray-700"
+              class="rounded-lg border-2 border-gray-200 p-2 focus:outline-none dark:border-gray-700 dark:bg-transparent"
               placeholder="User phone"
               type="text"
               :disabled="isEditting"
             />
-            <ErrorMessage class="text-red-600 text-sm" name="phone" />
+            <ErrorMessage class="text-sm text-red-600" name="phone" />
           </div>
           <div class="flex flex-col gap-2">
             <p>Job</p>
@@ -117,12 +117,12 @@
               as="input"
               name="job"
               v-model="values.job"
-              class="p-2 border-2 border-gray-200 rounded-lg focus:outline-none dark:bg-transparent dark:border-gray-700"
+              class="rounded-lg border-2 border-gray-200 p-2 focus:outline-none dark:border-gray-700 dark:bg-transparent"
               placeholder="User job"
               type="text"
               :disabled="isEditting"
             />
-            <ErrorMessage class="text-red-600 text-sm" name="job" />
+            <ErrorMessage class="text-sm text-red-600" name="job" />
           </div>
         </div>
         <div class="flex items-center justify-end gap-4">
@@ -131,9 +131,9 @@
             @click.prevent="!isEditting ? submitForm() : toggleEdit()"
             class="rounded-lg bg-green-vee text-white hover:bg-green-700"
           >
-            <p class="w-auto p-2 h-[40px]" v-if="isEditting">Edit</p>
+            <p class="h-[40px] w-auto p-2" v-if="isEditting">Edit</p>
             <p
-              class="w-[50px] p-2 h-[40px] flex items-center justify-center"
+              class="flex h-[40px] w-[50px] items-center justify-center p-2"
               v-if="!isEditting"
             >
               <span v-if="!isPending">Save</span>
@@ -145,15 +145,15 @@
     </div>
 
     <div v-show="tabs.tab === 'allUsers'" class="p-4 sm:ml-64">
-      <form
-        class="p-4 space-y-4 border-2 border-gray-200 border-dashed rounded-lg dark:border-gray-700"
+      <div
+        class="space-y-4 rounded-lg border-2 border-dashed border-gray-200 p-4 dark:border-gray-700"
       >
         <div class="relative overflow-x-auto shadow-md sm:rounded-lg">
           <table
-            class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400"
+            class="w-full text-left text-sm text-gray-500 dark:text-gray-400 rtl:text-right"
           >
             <thead
-              class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400"
+              class="bg-gray-50 text-xs uppercase text-gray-700 dark:bg-gray-700 dark:text-gray-400"
             >
               <tr>
                 <th scope="col" class="px-6 py-3">Name</th>
@@ -171,11 +171,11 @@
               <tr
                 v-for="user in allUsers"
                 :key="user._id"
-                class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600"
+                class="border-b bg-white hover:bg-gray-50 dark:border-gray-700 dark:bg-gray-800 dark:hover:bg-gray-600"
               >
                 <th
                   scope="row"
-                  class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"
+                  class="whitespace-nowrap px-6 py-4 font-medium text-gray-900 dark:text-white"
                 >
                   {{ user.name }}
                 </th>
@@ -191,7 +191,7 @@
                 <td class="px-6 py-4 text-right">
                   <div
                     @click="editUser(user)"
-                    class="font-medium text-green-vee dark:text-green-700 cursor-pointer hover:underline"
+                    class="cursor-pointer font-medium text-green-vee hover:underline dark:text-green-700"
                   >
                     Edit
                   </div>
@@ -199,15 +199,39 @@
               </tr>
             </tbody>
           </table>
+          <div
+            v-if="isNextPage"
+            class="absolute inset-0 flex items-center justify-center bg-gray-800 bg-opacity-50 transition-all dark:bg-gray-500 dark:bg-opacity-50"
+            role="status"
+          >
+            <svg
+              aria-hidden="true"
+              class="inline h-16 w-16 animate-spin fill-green-vee text-gray-200 transition-all dark:text-gray-400"
+              viewBox="0 0 100 101"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                d="M100 50.5908C100 78.2051 77.6142 100.591 50 100.591C22.3858 100.591 0 78.2051 0 50.5908C0 22.9766 22.3858 0.59082 50 0.59082C77.6142 0.59082 100 22.9766 100 50.5908ZM9.08144 50.5908C9.08144 73.1895 27.4013 91.5094 50 91.5094C72.5987 91.5094 90.9186 73.1895 90.9186 50.5908C90.9186 27.9921 72.5987 9.67226 50 9.67226C27.4013 9.67226 9.08144 27.9921 9.08144 50.5908Z"
+                fill="currentColor"
+              />
+              <path
+                d="M93.9676 39.0409C96.393 38.4038 97.8624 35.9116 97.0079 33.5539C95.2932 28.8227 92.871 24.3692 89.8167 20.348C85.8452 15.1192 80.8826 10.7238 75.2124 7.41289C69.5422 4.10194 63.2754 1.94025 56.7698 1.05124C51.7666 0.367541 46.6976 0.446843 41.7345 1.27873C39.2613 1.69328 37.813 4.19778 38.4501 6.62326C39.0873 9.04874 41.5694 10.4717 44.0505 10.1071C47.8511 9.54855 51.7191 9.52689 55.5402 10.0491C60.8642 10.7766 65.9928 12.5457 70.6331 15.2552C75.2735 17.9648 79.3347 21.5619 82.5849 25.841C84.9175 28.9121 86.7997 32.2913 88.1811 35.8758C89.083 38.2158 91.5421 39.6781 93.9676 39.0409Z"
+                fill="currentFill"
+              />
+            </svg>
+            <span class="sr-only">Loading...</span>
+          </div>
         </div>
-      </form>
-      <div class="flex justify-center items-center mt-6">
+        <TableSkeleton v-if="firstTableLoading" />
+      </div>
+      <div class="mt-6 flex items-center justify-center">
         <button
-          class="px-4 py-2 mr-2 text-white rounded"
+          class="mr-2 rounded px-4 py-2 text-white"
           :class="{
-            'bg-gray-300 text-black cursor-not-allowed hover:bg-gray-300':
+            'cursor-not-allowed bg-gray-300 text-black hover:bg-gray-300':
               currentPage === 1,
-            'bg-green-vee rounded hover:bg-[#339e7b]': currentPage !== 1,
+            'rounded bg-green-vee hover:bg-[#339e7b]': currentPage !== 1,
           }"
           :disabled="currentPage === 1"
           @click="changePage(currentPage - 1)"
@@ -220,11 +244,11 @@
         >
 
         <button
-          class="px-4 py-2 ml-2 text-white rounded"
+          class="ml-2 rounded px-4 py-2 text-white"
           :class="{
-            'bg-gray-300 text-black cursor-not-allowed hover:bg-gray-300':
+            'cursor-not-allowed bg-gray-300 text-black hover:bg-gray-300':
               currentPage === totalPages,
-            'bg-green-vee rounded hover:bg-[#339e7b]':
+            'rounded bg-green-vee hover:bg-[#339e7b]':
               currentPage !== totalPages,
           }"
           :disabled="currentPage === totalPages"
@@ -242,18 +266,18 @@
       :submit="editUserForm2"
       :isPending="isPending"
     >
-      <form class="grid grid-cols-1 w-full gap-2">
+      <form class="grid w-full grid-cols-1 gap-2">
         <div class="w-full">
           <p>Name</p>
           <Field
             as="input"
             name="name2"
             v-model="form2.name2"
-            class="p-2 border-2 border-gray-200 w-full rounded-lg focus:outline-none dark:bg-transparent dark:border-gray-700"
+            class="w-full rounded-lg border-2 border-gray-200 p-2 focus:outline-none dark:border-gray-700 dark:bg-transparent"
             placeholder="User name"
             type="text"
           />
-          <ErrorMessage class="text-red-600 text-sm" name="name2" />
+          <ErrorMessage class="text-sm text-red-600" name="name2" />
         </div>
         <div class="w-full">
           <p>Email</p>
@@ -261,12 +285,12 @@
             as="input"
             name="email2"
             v-model="form2.email2"
-            class="p-2 border-2 border-gray-200 w-full rounded-lg focus:outline-none cursor-not-allowed dark:bg-transparent dark:border-gray-700"
+            class="w-full cursor-not-allowed rounded-lg border-2 border-gray-200 p-2 focus:outline-none dark:border-gray-700 dark:bg-transparent"
             placeholder="User email"
             type="text"
             disabled="true"
           />
-          <ErrorMessage class="text-red-600 text-sm" name="email2" />
+          <ErrorMessage class="text-sm text-red-600" name="email2" />
         </div>
         <div class="w-full">
           <p>Email</p>
@@ -274,11 +298,11 @@
             as="input"
             name="phone2"
             v-model="form2.phone2"
-            class="p-2 border-2 border-gray-200 w-full rounded-lg focus:outline-none dark:bg-transparent dark:border-gray-700"
+            class="w-full rounded-lg border-2 border-gray-200 p-2 focus:outline-none dark:border-gray-700 dark:bg-transparent"
             placeholder="User phone"
             type="text"
           />
-          <ErrorMessage class="text-red-600 text-sm" name="phone2" />
+          <ErrorMessage class="text-sm text-red-600" name="phone2" />
         </div>
         <div class="w-full">
           <p>Address</p>
@@ -286,11 +310,11 @@
             as="input"
             name="address2"
             v-model="form2.address2"
-            class="p-2 border-2 border-gray-200 w-full rounded-lg focus:outline-none dark:bg-transparent dark:border-gray-700"
+            class="w-full rounded-lg border-2 border-gray-200 p-2 focus:outline-none dark:border-gray-700 dark:bg-transparent"
             placeholder="User address"
             type="text"
           />
-          <ErrorMessage class="text-red-600 text-sm" name="address2" />
+          <ErrorMessage class="text-sm text-red-600" name="address2" />
         </div>
         <div class="w-full">
           <p>Age</p>
@@ -298,11 +322,11 @@
             as="input"
             name="age2"
             v-model="form2.age2"
-            class="p-2 border-2 border-gray-200 w-full rounded-lg focus:outline-none dark:bg-transparent dark:border-gray-700"
+            class="w-full rounded-lg border-2 border-gray-200 p-2 focus:outline-none dark:border-gray-700 dark:bg-transparent"
             placeholder="User age"
             type="text"
           />
-          <ErrorMessage class="text-red-600 text-sm" name="age2" />
+          <ErrorMessage class="text-sm text-red-600" name="age2" />
         </div>
         <div class="w-full">
           <p>Job</p>
@@ -310,11 +334,11 @@
             as="input"
             name="job2"
             v-model="form2.job2"
-            class="p-2 border-2 border-gray-200 w-full rounded-lg focus:outline-none dark:bg-transparent dark:border-gray-700"
+            class="w-full rounded-lg border-2 border-gray-200 p-2 focus:outline-none dark:border-gray-700 dark:bg-transparent"
             placeholder="User job"
             type="text"
           />
-          <ErrorMessage class="text-red-600 text-sm" name="job2" />
+          <ErrorMessage class="text-sm text-red-600" name="job2" />
         </div>
       </form>
     </Modal>
@@ -331,6 +355,7 @@ import { useSideBarStore } from "@/stores/sidebarStore";
 import Modal from "./Modal.vue";
 import { allUserSchema, updateSchema } from "@/schema";
 import { useDarkModeStore } from "@/stores/darkModeStore";
+import TableSkeleton from "./TableSkeleton.vue";
 
 const apiCall = import.meta.env.VITE_BACKEND_API;
 
@@ -343,6 +368,8 @@ const sidebarOpen = ref(false);
 const isEditting = ref(true);
 const isPending = ref(false);
 const allUsers = ref([]);
+const isNextPage = ref(false);
+const firstTableLoading = ref(false);
 
 const limit = 10;
 const currentPage = ref(1);
@@ -396,7 +423,7 @@ const editUserForm2 = handleSubmitAllUsers(async (value) => {
         headers: {
           "Content-Type": "application/json",
         },
-      }
+      },
     );
     if (response.data) {
       await getAllUsers();
@@ -406,7 +433,7 @@ const editUserForm2 = handleSubmitAllUsers(async (value) => {
   } catch (error) {
     console.error(
       "Error fetching users:",
-      error.response ? error.response.data : error.message
+      error.response ? error.response.data : error.message,
     );
     isPending.value = false;
     throw error;
@@ -421,7 +448,7 @@ const getUserById = async () => {
         headers: {
           "Content-Type": "application/json",
         },
-      }
+      },
     );
     userStore.setUser(response.data);
     updateUserSetValues({
@@ -435,7 +462,7 @@ const getUserById = async () => {
   } catch (error) {
     console.error(
       "Error fetching users:",
-      error.response ? error.response.data : error.message
+      error.response ? error.response.data : error.message,
     );
     throw error;
   }
@@ -446,6 +473,7 @@ const toggleEdit = () => {
 };
 
 const getAllUsers = async (page) => {
+  if (currentPage.value === 1 && page !== 2) firstTableLoading.value = true;
   try {
     const response = await axiosConfig.get(
       `${apiCall}/api/user/get-users`,
@@ -459,18 +487,20 @@ const getAllUsers = async (page) => {
         headers: {
           "Content-Type": "application/json",
         },
-      }
+      },
     );
 
     if (response.data) {
       allUsers.value = response.data.users;
       currentPage.value = response.data.currentPage;
       totalPages.value = response.data.totalPages;
+      isNextPage.value = false;
+      firstTableLoading.value = false;
     }
   } catch (error) {
     console.error(
       "Error fetching users:",
-      error.response ? error.response.data : error.message
+      error.response ? error.response.data : error.message,
     );
     throw error;
   }
@@ -478,6 +508,7 @@ const getAllUsers = async (page) => {
 
 const changePage = (page) => {
   if (page >= 1 && page <= totalPages.value) {
+    isNextPage.value = true;
     getAllUsers(page);
   }
 };
@@ -512,7 +543,7 @@ const submitForm = handleSubmitUpdateUser(async (values) => {
         headers: {
           "Content-Type": "application/json",
         },
-      }
+      },
     );
     toggleEdit();
     userStore.setUser(response.data);
@@ -520,7 +551,7 @@ const submitForm = handleSubmitUpdateUser(async (values) => {
   } catch (error) {
     console.error(
       "Error fetching users:",
-      error.response ? error.response.data : error.message
+      error.response ? error.response.data : error.message,
     );
     isPending.value = false;
     throw error;
