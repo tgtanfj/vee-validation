@@ -1,7 +1,7 @@
 <script setup>
 import { useSideBarStore } from "@/stores/sidebarStore";
 import { useUserStore } from "@/stores/userStore";
-import { LogOut } from "lucide-vue-next";
+import { LogOut, UserPen, Users } from "lucide-vue-next";
 import { useRouter } from "vue-router";
 import { CircleX } from "lucide-vue-next";
 import DarkMode from "./DarkMode.vue";
@@ -41,43 +41,43 @@ const logOut = () => {
   <aside
     id="default-sidebar"
     :class="props.sidebarOpen ? 'translate-x-0' : '-translate-x-full'"
-    class="fixed top-0 left-0 z-40 w-64 h-screen transition-transform -translate-x-full sm:translate-x-0 shadow-xl"
+    class="fixed left-0 top-0 z-40 h-screen w-64 -translate-x-full shadow-xl transition-transform sm:translate-x-0"
     aria-label="Sidebar"
   >
     <div
       :class="darkmode ? 'dark' : ''"
-      class="h-full px-3 py-4 overflow-y-auto bg-gray-50 dark:bg-gray-800 relative"
+      class="relative h-full overflow-y-auto bg-gray-50 px-3 py-4 dark:bg-gray-800"
     >
       <CircleX
         v-if="props.sidebarOpen"
         @click="props.toggleSidebar"
         :stroke-width="1.25"
-        class="text-gray-500 ml-auto hover:text-gray-700 cursor-pointer"
+        class="ml-auto cursor-pointer text-gray-500 hover:text-gray-700"
       />
       <ul class="space-y-2 font-medium">
         <li class="my-4">
           <p
             @click="router.push('/home')"
-            class="text-center text-xl text-green-vee cursor-pointer"
+            class="cursor-pointer text-center text-xl text-green-vee"
           >
             VeePiniaVueRouter
           </p>
         </li>
         <li @click="clickTab('allUsers')" class="cursor-pointer">
           <div
-            class="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group"
+            class="group flex items-center rounded-lg p-2 text-gray-900 hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700"
             :class="{
               'bg-gray-200 hover:bg-gray-300 dark:bg-gray-600 dark:hover:bg-gray-700':
                 tabs.tab === 'allUsers',
             }"
           >
-            <UserPen size="25" class="text-gray-500" />
+            <Users size="25" class="text-gray-500" />
             <span class="ms-3">All Users</span>
           </div>
         </li>
         <li @click="clickTab('updateUser')" class="cursor-pointer">
           <div
-            class="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group"
+            class="group flex items-center rounded-lg p-2 text-gray-900 hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700"
             :class="{
               'bg-gray-200 hover:bg-gray-300 dark:bg-gray-600 dark:hover:bg-gray-700':
                 tabs.tab === 'updateUser',
@@ -89,7 +89,7 @@ const logOut = () => {
         </li>
         <li @click="logOut" class="cursor-pointer">
           <p
-            class="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group"
+            class="group flex items-center rounded-lg p-2 text-gray-900 hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700"
           >
             <LogOut size="25" class="text-gray-500" />
             <span class="ms-3">Log Out</span>
