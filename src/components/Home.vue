@@ -433,7 +433,7 @@ const editUserForm2 = handleSubmitAllUsers(async (value) => {
       },
     );
     if (response.data) {
-      // await getAllUsers();
+      refectAllUsers();
       setOpen();
       isPending.value = false;
     }
@@ -538,7 +538,7 @@ const fetchUsers = async (page) => {
 
 const {
   data: allUsersData,
-  refetch,
+  refetch: refectAllUsers,
   error,
   isPending: getUsersPending,
   isError,
@@ -569,7 +569,7 @@ const changePage = (name) => {
 };
 
 watch(currentPage, (newPage) => {
-  refetch();
+  refectAllUsers();
 });
 
 const editUser = (user) => {
