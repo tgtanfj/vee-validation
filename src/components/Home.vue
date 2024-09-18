@@ -167,9 +167,9 @@
                 </th>
               </tr>
             </thead>
-            <tbody v-if="allUsers.length">
+            <tbody v-if="allUsersData">
               <tr
-                v-for="user in allUsers"
+                v-for="user in allUsersData"
                 :key="user._id"
                 class="border-b bg-white hover:bg-gray-50 dark:border-gray-700 dark:bg-gray-800 dark:hover:bg-gray-600"
               >
@@ -208,7 +208,7 @@
             <span v-if="isExportFile" class="small-spinner"></span>
           </button>
           <div
-            v-if="isNextPage"
+            v-if="isFetching && !isLoading"
             class="absolute inset-0 flex items-center justify-center bg-gray-800 bg-opacity-50 transition-all dark:bg-gray-500 dark:bg-opacity-50"
             role="status"
           >
@@ -231,7 +231,7 @@
             <span class="sr-only">Loading...</span>
           </div>
         </div>
-        <TableSkeleton v-if="firstTableLoading" />
+        <TableSkeleton v-if="isLoading" />
       </div>
       <div class="mt-6 flex items-center justify-center">
         <button
@@ -242,7 +242,7 @@
             'rounded bg-green-vee hover:bg-[#339e7b]': currentPage !== 1,
           }"
           :disabled="currentPage === 1"
-          @click="changePage(currentPage - 1)"
+          @click="changePage('decre')"
         >
           Back
         </button>
@@ -260,7 +260,7 @@
               currentPage !== totalPages,
           }"
           :disabled="currentPage === totalPages"
-          @click.prevent="changePage(currentPage + 1)"
+          @click.prevent="changePage('incre')"
         >
           Next
         </button>
@@ -356,7 +356,7 @@
 <script setup>
 import { useUserStore } from "@/stores/userStore";
 import axiosConfig from "@/config/axiosConfig";
-import { onMounted, ref } from "vue";
+import { onMounted, ref, watch } from "vue";
 import { ErrorMessage, Field, useForm } from "vee-validate";
 import SideBar from "./SideBar.vue";
 import { useSideBarStore } from "@/stores/sidebarStore";
@@ -365,6 +365,7 @@ import { allUserSchema, updateSchema } from "@/schema";
 import { useDarkModeStore } from "@/stores/darkModeStore";
 import TableSkeleton from "./TableSkeleton.vue";
 import { FileDown } from "lucide-vue-next";
+import { useQuery } from "@tanstack/vue-query";
 
 const apiCall = import.meta.env.VITE_BACKEND_API;
 
@@ -376,12 +377,9 @@ const isOpen = ref(false);
 const sidebarOpen = ref(false);
 const isEditting = ref(true);
 const isPending = ref(false);
-const allUsers = ref([]);
-const isNextPage = ref(false);
 const firstTableLoading = ref(false);
 const isExportFile = ref(false);
 
-const limit = 10;
 const currentPage = ref(1);
 const totalPages = ref(1);
 
@@ -405,7 +403,6 @@ const {
 
 onMounted(() => {
   getUserById();
-  getAllUsers();
 });
 
 const toggleSidebar = () => {
@@ -436,7 +433,7 @@ const editUserForm2 = handleSubmitAllUsers(async (value) => {
       },
     );
     if (response.data) {
-      await getAllUsers();
+      // await getAllUsers();
       setOpen();
       isPending.value = false;
     }
@@ -512,31 +509,24 @@ const toggleEdit = () => {
   isEditting.value = !isEditting.value;
 };
 
-const getAllUsers = async (page) => {
-  if (currentPage.value === 1 && page !== 2) firstTableLoading.value = true;
+const fetchUsers = async (page) => {
   try {
     const response = await axiosConfig.get(
-      `${apiCall}/api/user/get-users`,
+      `${import.meta.env.VITE_BACKEND_API}/api/user/get-users`,
       {
         params: {
           page,
-          limit,
+          limit: 10,
         },
-      },
-      {
         headers: {
           "Content-Type": "application/json",
         },
       },
     );
-
-    if (response.data) {
-      allUsers.value = response.data.users;
-      currentPage.value = response.data.currentPage;
-      totalPages.value = response.data.totalPages;
-      isNextPage.value = false;
-      firstTableLoading.value = false;
-    }
+    firstTableLoading.value = false;
+    currentPage.value = response.data.currentPage;
+    totalPages.value = response.data.totalPages;
+    return response.data.users;
   } catch (error) {
     console.error(
       "Error fetching users:",
@@ -546,12 +536,41 @@ const getAllUsers = async (page) => {
   }
 };
 
-const changePage = (page) => {
-  if (page >= 1 && page <= totalPages.value) {
-    isNextPage.value = true;
-    getAllUsers(page);
+const {
+  data: allUsersData,
+  refetch,
+  error,
+  isPending: getUsersPending,
+  isError,
+  isFetching,
+  isLoading,
+  fetchNextPage,
+  isFetchingNextPage,
+  isSuccess,
+} = useQuery({
+  queryKey: ["users", currentPage.value],
+  queryFn: () => fetchUsers(currentPage.value),
+  keepPreviousData: true,
+  onSuccess: (data) => {
+    currentPage.value = data.currentPage;
+    totalPages.value = data.totalPages;
+  },
+  onError: (error) => {
+    console.error("Error during fetch:", error.message);
+  },
+});
+
+const changePage = (name) => {
+  if (name === "incre") {
+    currentPage.value += 1;
+  } else if (name === "decre") {
+    currentPage.value -= 1;
   }
 };
+
+watch(currentPage, (newPage) => {
+  refetch();
+});
 
 const editUser = (user) => {
   allUsersSetvalue({

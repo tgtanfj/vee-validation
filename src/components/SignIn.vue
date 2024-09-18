@@ -38,7 +38,7 @@
                 <Field
                   type="email"
                   name="email"
-                  :disabled="loading"
+                  :disabled="isPending"
                   id="email"
                   v-model="form.email"
                   as="input"
@@ -55,7 +55,7 @@
                 >
                 <Field
                   type="password"
-                  :disabled="loading"
+                  :disabled="isPending"
                   name="password"
                   as="input"
                   id="password"
@@ -75,17 +75,17 @@
               </div>
               <button
                 type="submit"
-                :disabled="loading"
+                :disabled="isPending"
                 class="flex w-full items-center justify-center rounded-lg bg-green-vee px-5 py-2.5 text-center text-sm font-medium text-white hover:bg-green-vee focus:outline-none focus:ring-4 focus:ring-green-300 dark:bg-green-500 dark:hover:bg-green-600 dark:focus:ring-green-700"
               >
-                <span v-if="loading === true" class="spinner"></span>
-                <span v-if="!loading">Sign in</span>
+                <span v-if="isPending" class="spinner"></span>
+                <span v-if="!isPending">Sign in</span>
               </button>
-              <p v-if="success" class="success-message">
+              <p v-if="isSuccess" class="success-message">
                 "Sign in successfully!"
               </p>
-              <p v-if="isError.message !== ''" class="text-red-500">
-                {{ isError.message }}
+              <p v-if="isError" class="text-red-500">
+                {{ error.response ? error.response.data.message : error.message }}
               </p>
               <p
                 class="flex items-center gap-1 text-sm font-light text-gray-500 dark:text-gray-400"
@@ -107,13 +107,13 @@
 
 <script setup>
 import { useForm, Field, ErrorMessage, useResetForm } from "vee-validate";
-import { ref } from "vue";
 import * as yup from "yup";
 import { useRouter } from "vue-router";
 import { useUserStore } from "@/stores/userStore";
 import axiosConfig from "@/config/axiosConfig";
 import DarkMode from "./DarkMode.vue";
 import { useDarkModeStore } from "@/stores/darkModeStore";
+import { useMutation } from "@tanstack/vue-query";
 
 const router = useRouter();
 const userStore = useUserStore();
@@ -126,9 +126,6 @@ const handleChangeToSignUp = () => {
 };
 
 const resetForm = useResetForm();
-const loading = ref(false);
-const success = ref(false);
-const isError = ref("");
 
 const schema = yup.object({
   email: yup.string().required("Email is required").email("Email is not valid"),
@@ -148,41 +145,41 @@ const storeTokens = (token, refreshToken) => {
   userStore.setRefreshToken(refreshToken);
 };
 
-const submitForm = handleSubmit(async (values) => {
-  try {
-    loading.value = true;
-    isError.value = "";
+const { isPending, isError, error, isSuccess, mutate } = useMutation({
+  mutationFn: async (values) => {
     const response = await axiosConfig.post(
       `${apiCall}/api/auth/login`,
-      JSON.stringify({
+      {
         email: values.email,
         password: values.password,
-      }),
+      },
       {
         headers: {
           "Content-Type": "application/json",
         },
       },
     );
-
-    const { token, refreshToken } = response.data;
-
-    storeTokens(token, refreshToken);
-
-    success.value = true;
-    resetForm();
-    loading.value = false;
-    router.push("/home");
-    userStore.setUser(response.data.user);
+    return response.data;
+  },
+  onSuccess: (data) => {
+    userStore.setToken(data.token);
+    userStore.setRefreshToken(data.refreshToken);
+    userStore.setUser(data.user);
     userStore.setIsAuth(true);
-  } catch (error) {
+    router.push("/home");
+    resetForm();
+  },
+  onError: (error) => {
+    console.log("error", error.response.data)
     console.error(
       "Error during sign in:",
       error.response ? error.response.data : error.message,
     );
-    isError.value = error.response ? error.response.data : error.message;
-    loading.value = false;
-  }
+  },
+});
+
+const submitForm = handleSubmit((values) => {
+  mutate(values);
 });
 </script>
 

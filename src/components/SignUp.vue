@@ -36,7 +36,7 @@
                   >Your name</label
                 >
                 <Field
-                  :disabled="loading"
+                  :disabled="isPending"
                   type="text"
                   name="name"
                   id="name"
@@ -54,7 +54,7 @@
                   >Your email</label
                 >
                 <Field
-                  :disabled="loading"
+                  :disabled="isPending"
                   type="email"
                   name="email"
                   id="email"
@@ -72,7 +72,7 @@
                   >Password</label
                 >
                 <Field
-                  :disabled="loading"
+                  :disabled="isPending"
                   type="password"
                   name="password"
                   as="input"
@@ -108,7 +108,7 @@
                   >Confirm Password</label
                 >
                 <Field
-                  :disabled="loading"
+                  :disabled="isPending"
                   type="password"
                   name="rePassword"
                   as="input"
@@ -120,18 +120,20 @@
                 <ErrorMessage class="text-sm text-red-600" name="rePassword" />
               </div>
               <button
-                :disabled="loading"
+                :disabled="isPending"
                 type="submit"
                 class="flex w-full items-center justify-center gap-2 rounded-lg bg-green-vee px-5 py-2.5 text-center text-sm font-medium text-white hover:bg-green-vee focus:outline-none focus:ring-4 focus:ring-green-300 dark:bg-green-500 dark:hover:bg-green-600 dark:focus:ring-green-700"
               >
-                <span v-if="loading === true" class="spinner"></span>
-                <span v-if="!loading">Sign up</span>
+                <span v-if="isPending === true" class="spinner"></span>
+                <span v-if="!isPending">Sign up</span>
               </button>
-              <p v-if="success" class="success-message">
+              <p v-if="isSuccess" class="success-message">
                 Sign up successfully!
               </p>
-              <p v-if="isError.message !== ''" class="text-red-500">
-                {{ isError.message }}
+              <p v-if="isError" class="text-red-500">
+                {{
+                  error.response ? error.response.data.message : error.message
+                }}
               </p>
               <p
                 class="flex items-center gap-1 text-sm font-light text-gray-500 dark:text-gray-400"
@@ -160,6 +162,7 @@ import { useRouter } from "vue-router";
 import axiosConfig from "@/config/axiosConfig";
 import DarkMode from "./DarkMode.vue";
 import { useDarkModeStore } from "@/stores/darkModeStore";
+import { useMutation } from "@tanstack/vue-query";
 
 const apiCall = import.meta.env.VITE_BACKEND_API;
 
@@ -167,10 +170,6 @@ const router = useRouter();
 const darkmode = useDarkModeStore();
 
 const passwordStrength = ref(null);
-
-const loading = ref(false);
-const success = ref(false);
-const isError = ref(false);
 
 const handleChangeToSignIn = () => {
   router.push("/sign-in");
@@ -215,44 +214,38 @@ const {
   validationSchema: schema,
 });
 
-const storeTokens = (token, refreshToken) => {
-  localStorage.setItem("token", token);
-  localStorage.setItem("refresh_token", refreshToken);
-};
-
-const submitForm = handleSubmit(async (values) => {
-  try {
-    isError.value = "";
+const { isPending, isError, error, isSuccess, mutate } = useMutation({
+  mutationFn: async (values) => {
     const response = await axiosConfig.post(
       `${apiCall}/api/auth/register`,
-      JSON.stringify({
+      {
         name: values.name,
         email: values.email,
         password: values.password,
-      }),
+      },
       {
         headers: {
           "Content-Type": "application/json",
         },
       },
     );
-
-    const { token, refreshToken } = response.data;
-
-    storeTokens(token, refreshToken);
-
-    loading.value = true;
+    return response.data;
+  },
+  onSuccess: (data) => {
     resetForm();
-    success.value = true;
-    loading.value = false;
     passwordStrength.value = 0;
-  } catch (error) {
+  },
+  onError: (error) => {
+    console.log("error", error.response.data);
     console.error(
-      "Error during sign up:",
+      "Error during sign in:",
       error.response ? error.response.data : error.message,
     );
-    isError.value = error.response ? error.response.data : error.message;
-  }
+  },
+});
+
+const submitForm = handleSubmit(async (values) => {
+  mutate(values);
 });
 </script>
 
